@@ -1,0 +1,36 @@
+.filterSort {
+  width: 250px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 auto;
+  justify-items: center;
+  align-items: center;
+}
+.topBar input {
+  outline: none;
+  transform: none;
+  width: 80px;
+  justify-self: start;
+  margin: 0;
+  
+}
+.topBar label {
+  justify-self: end;
+  margin: 0;
+  padding-left: 10px;
+}
+.balance{
+    text-align: center;
+    margin: 10px;
+    padding: 0 10px;
+}
+@media screen and (max-width:400px){
+    .topBar, .filterSort{
+    width: auto;
+}
+.balance{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}}

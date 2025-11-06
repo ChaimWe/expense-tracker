@@ -1,0 +1,10 @@
+.transactionList{
+    margin: 20px;
+}
+.transactionList.inEdit{
+    background-color: rgba(0, 0, 0, 0.76);
+}
+.transactionList p{
+    color: gray;
+    text-align: center;
+}
