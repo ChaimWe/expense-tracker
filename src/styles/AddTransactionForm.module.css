@@ -5,7 +5,7 @@ body {
 }
 
 form {
-  width: 700px;
+  width: 40vw;
   align-content: center;
   display: grid;
   grid-template-columns: 1fr 1fr;

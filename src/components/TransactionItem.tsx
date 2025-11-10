@@ -12,7 +12,7 @@ export default function TransactionItem({
     <div
       className={`${
         transaction.expenseIncome ? styles.income : styles.expense
-      } ${TransactionToEdit?.id===transaction.id ? styles.inEdit : ''}`}
+      } ${TransactionToEdit?.id === transaction.id && styles.inEdit}`}
       onDoubleClick={() => onEditClick(transaction)}
     >
       <span className="name">{transaction.name}</span>

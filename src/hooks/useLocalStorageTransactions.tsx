@@ -27,9 +27,9 @@ export default function useLocalStorageTransactions(): useLocalStorageTransactio
   const onAdd = (transaction: Transaction): void =>
     setTransactions((prev) => [transaction, ...prev]);
 
-  const onEdit = (id: number, newTransaction: Transaction): void =>
+  const onEdit = ( newTransaction: Transaction): void =>
     setTransactions((prev) =>
-      prev.map((transaction) => transaction.id === id ? newTransaction : transaction)
+      prev.map((transaction) => transaction.id === newTransaction.id ? newTransaction : transaction)
     );
 
   return { transactions, onAdd, onEdit };

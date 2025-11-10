@@ -8,13 +8,13 @@ export type Transaction={
 export interface useLocalStorageTransactionsResult{
     transactions: Transaction[];
     onAdd: (transaction: Transaction) => void;
-    onEdit: (id: number, newTransaction: Transaction ) => void;
+    onEdit: ( newTransaction: Transaction ) => void;
 }
 export interface AddTransactionFormProps{
     onAddTransaction: (transaction: Transaction) => void;
-    TransactionToEdit: Transaction | null;
+    transactionToEdit: Transaction | null;
     setTransactionToEdit: React.Dispatch<React.SetStateAction<Transaction | null>>;
-    onEditTransaction: (id: number, transaction: Transaction) => void;
+    onEditTransaction: (updatedTransaction: Transaction) => void;
 }
 export interface TransactionItemProps{
     TransactionToEdit: Transaction | null;

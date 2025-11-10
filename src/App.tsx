@@ -10,46 +10,44 @@ function App() {
   const [transactionToEdit, setTransactionToEdit] =
     useState<Transaction | null>(null);
   const [filterSelection, setFilterSelection] = useState<boolean | null>(null);
-
-  const filteredTransactions =
-    filterSelection !== null
-      ? transactions.filter((t) => t.expenseIncome === filterSelection)
-      : transactions;
   const [sortingValue, setSortingValue] = useState<keyof Transaction | null>(
     null
   );
   const filteredAndSorted = useMemo(() => {
-    let result = filteredTransactions;
+    let filteredTransactions: Transaction[] =
+      filterSelection !== null
+        ? transactions.filter((t) => t.expenseIncome === filterSelection)
+        : transactions;
 
     if (sortingValue) {
-      result = [...result].sort((a, b) => {
-        const aVal = a[sortingValue];
-        const bVal = b[sortingValue];
-        if (aVal === null && bVal === null) return 0;
-        if (aVal === null) return 1;
-        if (bVal === null) return -1;
+      filteredTransactions = [...filteredTransactions].sort((a, b) => {
+        const aValue = a[sortingValue];
+        const bValue = b[sortingValue];
+        if (aValue === null && bValue === null) return 0;
+        if (aValue === null) return 1;
+        if (bValue === null) return -1;
 
-        if (typeof aVal === "number" && typeof bVal === "number")
-          return aVal - bVal;
-        if (typeof aVal === "string" && typeof bVal === "string")
-          return aVal.localeCompare(bVal);
-        if (typeof aVal === "boolean" && typeof bVal === "boolean")
-          return (aVal ? 1 : 0) - (bVal ? 1 : 0);
+        if (typeof aValue === "number" && typeof bValue === "number")
+          return aValue - bValue;
+        if (typeof aValue === "string" && typeof bValue === "string")
+          return aValue.localeCompare(bValue);
+        if (typeof aValue === "boolean" && typeof bValue === "boolean")
+          return (aValue ? 1 : 0) - (bValue ? 1 : 0);
 
         return 0;
       });
     }
-    return result;
-  }, [filteredTransactions, sortingValue]);
+    return filteredTransactions;
+  }, [transactions, sortingValue, filterSelection]);
 
-  const totalAmounts = useMemo(()=>{
-    let income = 0; 
+  const totalAmounts = useMemo(() => {
+    let income = 0;
     let expense = 0;
-    filteredTransactions.forEach(t =>{
-      t.expenseIncome? income += t.amount: expense += t.amount
-    })
-    return {income, expense, balance: income - expense}
-  }, [filteredTransactions]);
+    filteredAndSorted.forEach((t) => {
+      t.expenseIncome ? (income += t.amount) : (expense += t.amount);
+    });
+    return { income, expense, balance: income - expense };
+  }, [filteredAndSorted]);
 
   const onEditClick = (transaction: Transaction) =>
     setTransactionToEdit(transaction);
@@ -59,11 +57,11 @@ function App() {
       <AddTransactionForm
         onAddTransaction={onAdd}
         setTransactionToEdit={setTransactionToEdit}
-        TransactionToEdit={transactionToEdit}
+        transactionToEdit={transactionToEdit}
         onEditTransaction={onEdit}
       />
       <TopBar
-      totalAmounts={totalAmounts}
+        totalAmounts={totalAmounts}
         setFilterSelection={setFilterSelection}
         setSortingValue={setSortingValue}
       />

@@ -4,39 +4,40 @@ import styles from "../styles/AddTransactionForm.module.css";
 
 export default function AddTransactionForm({
   onAddTransaction,
-  TransactionToEdit,
+  transactionToEdit,
   setTransactionToEdit,
   onEditTransaction,
 }: AddTransactionFormProps) {
   const [name, setName] = useState<string>("");
   const [details, setDetails] = useState<string>("");
-  const [amount, setAmount] = useState<string>('');
+  const [amount, setAmount] = useState<string>("");
   const [expenseIncome, setExpenseIncome] = useState<boolean | null>(null);
+
   useEffect(() => {
-    if (TransactionToEdit) {
-      setName(TransactionToEdit.name);
-      setDetails(TransactionToEdit.details);
-      setAmount(TransactionToEdit.amount.toString());
-      setExpenseIncome(TransactionToEdit.expenseIncome);
+    if (transactionToEdit) {
+      setName(transactionToEdit.name);
+      setDetails(transactionToEdit.details);
+      setAmount(transactionToEdit.amount.toString());
+      setExpenseIncome(transactionToEdit.expenseIncome);
     }
-  }, [TransactionToEdit]);
+  }, [transactionToEdit]);
 
   const handleEdit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (TransactionToEdit) {
-      const validAmount = parseFloat(amount)|0;
-      const id = TransactionToEdit.id;
-      onEditTransaction(TransactionToEdit?.id, {
-        id,
+    if (transactionToEdit) {
+      const validAmount = parseFloat(amount);
+      const updatedTransaction = {
+        ...transactionToEdit,
         name,
         details,
         amount: validAmount,
         expenseIncome,
-      });
+      };
+      onEditTransaction(updatedTransaction);
       setName("");
       setDetails("");
-      setAmount('');
+      setAmount("");
       setExpenseIncome(null);
       setTransactionToEdit(null);
     }
@@ -48,22 +49,28 @@ export default function AddTransactionForm({
       alert("Please enter a transaction type.");
       return;
     }
-    if (!amount || amount === '0') {
+    if (!amount || amount === "0") {
       alert("Please Enter a valid amount");
       return;
     }
     const validAmount = parseFloat(amount);
-    onAddTransaction({ id: Date.now(), name, details, amount: validAmount, expenseIncome });
+    onAddTransaction({
+      id: Date.now(),
+      name,
+      details,
+      amount: validAmount,
+      expenseIncome,
+    });
     setName("");
     setDetails("");
-    setAmount('');
+    setAmount("");
     setExpenseIncome(null);
   };
 
   return (
     <form
       className={styles.form}
-      onSubmit={TransactionToEdit ? handleEdit : handleSubmit}
+      onSubmit={transactionToEdit ? handleEdit : handleSubmit}
     >
       <input
         type="text"
@@ -80,7 +87,7 @@ export default function AddTransactionForm({
       <input
         type="text"
         inputMode="numeric"
-        pattern="\d+(\.?\d*)?|\.?d+"
+        pattern="\d+(\.?\d*)?|\.?\d+"
         value={amount}
         onChange={(e) => {
           const value = e.target.value;

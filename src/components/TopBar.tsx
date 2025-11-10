@@ -1,4 +1,4 @@
-import type { TopBarProps } from "../types/interfaces";
+import type { TopBarProps, Transaction } from "../types/interfaces";
 import styles from "../styles/TopBar.module.css";
 
 export default function TopBar({
@@ -7,17 +7,42 @@ export default function TopBar({
   totalAmounts,
 }: TopBarProps) {
   const parseFilterValue = (e: string) => {
-    if (e === "expense") return setFilterSelection(false);
-    if (e === "income") return setFilterSelection(true);
-    return setFilterSelection(null);
+    switch (e) {
+      case "expense":
+        setFilterSelection(false);
+        break;
+      case "income":
+        setFilterSelection(true);
+        break;
+      default:
+        setFilterSelection(null);
+    }
   };
   const parseSortingValue = (e: string) => {
-    if (e === "sort") return setSortingValue(null);
-    if (e === "name") return setSortingValue("name");
-    if (e === "amount") return setSortingValue("amount");
-    if (e === "id") return setSortingValue("id");
-    if (e === "expenseIncome") return setSortingValue("expenseIncome");
+    switch (e) {
+      case "sort":
+        setSortingValue(null);
+        break;
+      case "name":
+        setSortingValue("name");
+        break;
+      case "amount":
+        setSortingValue("amount");
+        break;
+      case "id":
+        setSortingValue("id");
+        break;
+      case "expenseIncome":
+        setSortingValue("expenseIncome");
+        break;
+    }
   };
+  const sortOptions: {label: string, value: keyof Transaction}[] = [
+    {label:"Name", value: 'name'},
+    {label:"Amount", value: 'amount'},
+    {label: 'Date', value:"id"},
+    {label:'type',value:"expenseIncome"},
+  ];
 
   return (
     <div className={styles.topBar}>
@@ -32,10 +57,11 @@ export default function TopBar({
         </select>
         <select name="sort" onChange={(e) => parseSortingValue(e.target.value)}>
           <option value="sort">Sort by</option>
-          <option value="name">Name</option>
-          <option value="amount">Amount</option>
-          <option value="id">Date</option>
-          <option value="expenseIncome">Type</option>
+          {sortOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
         </select>
       </div>
       <div className={styles.balance}>
